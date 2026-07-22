@@ -1,0 +1,215 @@
+---
+---
+
+@use 'main';
+
+/* =========================================================
+   GloamRaven theme — FINAL
+   ========================================================= */
+
+/* 코드 글씨 크기 = 본문 */
+code,
+pre,
+.highlight { font-size: 1em; }
+
+/* ---------------- 라이트: 신문 ---------------- */
+@mixin gr-light {
+  --dusk: #2f6db3;                 /* Primary Blue */
+  --main-bg: #f7f5f0;              /* Background */
+  --card-bg: #fcfbf8;              /* Surface / Card */
+  --card-header-bg: #f7f5f0;
+  --news-border: #d9d4cb;          /* Border / Line */
+  --main-border-color: #d9d4cb;
+  --btn-border-color: #d9d4cb;
+  --tb-border-color: #d9d4cb;
+
+  --link-color: var(--dusk);
+  --toc-highlight: var(--dusk);
+  --site-title-color: var(--dusk);
+  --btn-share-hover-color: #4c8ed9;/* Hover Blue */
+
+  --heading-color: #222222;        /* Text Primary */
+  --text-color: #333333;
+  --text-muted-color: #888888;     /* Muted */
+
+  --sidebar-bg: var(--main-bg);
+  --sidebar-border-color: #d9d4cb;
+  --divider: #d9d4cb;
+  --topbar-bg: var(--main-bg);
+
+  --blockquote-border-color: #d9d4cb;
+  --blockquote-text-color: #555555;
+
+  /* 코드 (따뜻한 종이) */
+  --highlight-bg-color: #eceef1;
+  --code-color: #222222;
+  --inline-code-bg: #eceef1;
+  --syn-bg: #eceef1;   --syn-base: #222222;   --syn-comment: #6b6152;
+  --syn-keyword: #c0392b;  --syn-type: #2f6db3;  --syn-func: #1e5fa8;
+  --syn-string: #7a5c00;   --syn-number: #2e7d32;
+  --syn-add: #1a7f37;      --syn-del: #cf222e;
+}
+
+/* ---------------- 다크: cold city at dusk ---------------- */
+@mixin gr-dark {
+  --dusk: #3d8bff;                 /* Primary */
+  --main-bg: #090b10;              /* Background */
+  --card-bg: #111827;              /* Card */
+  --main-border-color: #232c3e;
+  --btn-border-color: #232c3e;
+  --tb-border-color: #232c3e;
+  --card-header-bg: #151d2e;
+  --categories-hover-bg: #1a2233;
+  --avatar-border-color: transparent;
+
+  --link-color: var(--dusk);
+  --toc-highlight: var(--dusk);
+  --site-title-color: var(--dusk);
+  --btn-share-hover-color: #7df9ff;/* Accent */
+  --checkbox-checked-color: #3ebbff;
+
+  --heading-color: #eaf3ff;        /* Highlight */
+  --text-color: #98a2b3;           /* Gray */
+  --text-muted-color: #6f7889;
+
+  --sidebar-bg: var(--main-bg);
+  --sidebar-border-color: #232c3e;
+  --divider: #232c3e;
+  --topbar-bg: var(--main-bg);
+
+  --prompt-tip-icon-color: #53e5b5;
+  --prompt-warning-icon-color: #ffc857;
+  --clipboard-checked-color: #7df9ff;
+
+  --highlight-bg-color: #111827;
+  --code-color: #c8d2e0;
+  --inline-code-bg: rgb(62 187 255 / 12%);
+  --syn-bg: #111827;   --syn-base: #c8d2e0;   --syn-comment: #626c7d;
+  --syn-keyword: #3ebbff;  --syn-type: #7df9ff;  --syn-func: #7df9ff;
+  --syn-string: #93b8e0;   --syn-number: #7fc8ff;
+  --syn-add: #53e5b5;      --syn-del: #f2787d;
+}
+
+/* 라이트 모드 전용: 신문 에디토리얼 */
+@mixin gr-light-outline {
+  /* 본문 영역만 세리프 (사이드바/상단바/패널은 원래 폰트 유지) */
+  main { font-family: Georgia, Cambria, 'Times New Roman', serif; }
+
+  /* 상단 경로줄 아래 신문 더블 라인 (두 줄) */
+  #topbar-wrapper {
+    border-bottom: 4px double #b0a89a;
+  }
+
+  /* 카드 — 얇은 라인 + 파란 왼쪽 액센트 */
+  .card {
+    border: 1px solid var(--news-border);
+    border-left: 3px solid var(--dusk);
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+  .categories .card-header { border-bottom: 1px solid var(--news-border); }
+
+  /* 코드 블록 — 파란 왼쪽 액센트 */
+  .highlighter-rouge {
+    border: 1px solid var(--news-border);
+    border-left: 3px solid var(--dusk);
+    border-radius: 0 !important;
+  }
+  .highlighter-rouge .code-header { border-bottom: 1px solid var(--news-border); }
+
+  /* 인용문 */
+  blockquote { background: #f3f0ea; border-radius: 0; }
+
+  /* 태그 */
+  .post-tag {
+    border: 1px solid var(--news-border);
+    border-radius: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* 주석 = 노란 형광펜 (한 덩어리라 안 끊김) */
+  .highlight .c,  .highlight .ch, .highlight .cd, .highlight .cm,
+  .highlight .cpf, .highlight .c1, .highlight .cs {
+    background-color: rgba(255, 213, 74, 0.5);
+    border-radius: 1px;
+    padding: 0 2px;
+  }
+
+  /* 키워드 = 빨간펜 밑줄 */
+  .highlight .k,  .highlight .kn, .highlight .kp, .highlight .kr,
+  .highlight .kv, .highlight .kd {
+    text-decoration: underline;
+    text-decoration-color: #c0392b;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  /* 파란펜 = 파란 밑줄 (함수·타입) */
+  .highlight .kt, .highlight .nc, .highlight .nn, .highlight .no,
+  .highlight .na, .highlight .nf, .highlight .fm, .highlight .nb,
+  .highlight .bp {
+    text-decoration: underline;
+    text-decoration-color: #2f6db3;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+}
+
+/* ---------------- 모드 적용 (테마와 동일 우선순위) ---------------- */
+:root[data-bs-theme='light'] { @include gr-light; @include gr-light-outline; }
+:root[data-bs-theme='dark']  { @include gr-dark; }
+@media (prefers-color-scheme: light) {
+  :root:not([data-bs-theme]) { @include gr-light; @include gr-light-outline; }
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-bs-theme]) { @include gr-dark; }
+}
+
+/* ---------------- 코드 하이라이트 규칙 (변수 사용) ---------------- */
+:root[data-bs-theme='light'],
+:root[data-bs-theme='dark'],
+:root:not([data-bs-theme]) {
+  .highlight { background-color: var(--syn-bg); }
+
+  .highlight, .highlight .w,
+  .highlight .p, .highlight .pi,
+  .highlight .nv, .highlight .vc, .highlight .vg,
+  .highlight .vi, .highlight .vm { color: var(--syn-base); }
+
+  .highlight .c,  .highlight .ch, .highlight .cd, .highlight .cm,
+  .highlight .cpf, .highlight .c1, .highlight .cs {
+    color: var(--syn-comment); font-style: italic;
+  }
+
+  .highlight .k,  .highlight .kn, .highlight .kp, .highlight .kr,
+  .highlight .kv, .highlight .kc, .highlight .kd,
+  .highlight .o,  .highlight .ow, .highlight .nt { color: var(--syn-keyword); }
+
+  .highlight .kt, .highlight .nc, .highlight .nn,
+  .highlight .no, .highlight .na { color: var(--syn-type); }
+
+  .highlight .nf, .highlight .fm,
+  .highlight .nb, .highlight .bp { color: var(--syn-func); }
+
+  .highlight .s,  .highlight .sb, .highlight .sc, .highlight .dl,
+  .highlight .sd, .highlight .s2, .highlight .sh, .highlight .sx,
+  .highlight .s1, .highlight .sr { color: var(--syn-string); }
+
+  .highlight .m,  .highlight .mb, .highlight .mf, .highlight .mh,
+  .highlight .mi, .highlight .il, .highlight .mo, .highlight .mx,
+  .highlight .ss { color: var(--syn-number); }
+
+  .highlight .gi { color: var(--syn-add); background-color: transparent; }
+  .highlight .gd { color: var(--syn-del); background-color: transparent; }
+  .highlight .err { color: var(--syn-bg); background-color: var(--syn-del); }
+}
+
+/* ---------------- 사이드바 ↔ 본문 구분선 ---------------- */
+#sidebar {
+  border-right: 1px solid var(--divider);
+}
+
+.post-meta .d-flex.justify-content-between > span:first-child {
+  display: none;
+}
