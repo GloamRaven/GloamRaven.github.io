@@ -16,7 +16,7 @@ timezone: Asia/Seoul
 
 title: GloamRaven # the main title
 
-tagline: Security Researcher & Developer # it will display as the subtitle
+tagline: Offensive security · Windows internals · detection # it will display as the subtitle
 
 description: >- # used by seo meta and the atom feed
   Security writeups, CTF solutions, and notes on offensive & defensive security.
