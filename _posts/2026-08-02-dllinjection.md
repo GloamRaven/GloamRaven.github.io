@@ -1,6 +1,6 @@
 ---
 title: "Classic DLL Injection"
-date: 2026-08-02 05:00:00 +0900
+date: 2026-08-02 04:50:00 +0900
 categories: [Process Injection]
 tags: [windows, process-injection, dll-injection, mitre-t1055]
 ---
