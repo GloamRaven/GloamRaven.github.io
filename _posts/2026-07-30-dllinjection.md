@@ -1,6 +1,6 @@
 ---
 title: "Classic DLL Injection"
-date: 2026-07-30 06:00:00 +0900
+date: 2026-08-02 05:00:00 +0900
 categories: [Process Injection]
 tags: [windows, process-injection, dll-injection, mitre-t1055]
 ---
@@ -20,9 +20,9 @@ With ASLR enabled, Windows picks a random base address for `kernel32.dll` once p
 
 That is why `LoadLibraryW` sits at the same address in the injector and in the target, and why the pointer can be passed straight to `CreateRemoteThread`.
 
-Two limits are worth knowing: the address changes after a reboot, and it does not hold between 32-bit and 64-bit processes, which map different copies of `kernel32.dll`.
+Two limits are worth knowing. The address changes after a reboot, so it has to be resolved at run time and can never be hardcoded.
 
-The injector and the target must have the same bitness. A 32-bit process maps `kernel32.dll` from `SysWOW64`, not `System32`, so an address resolved in a 64-bit injector is meaningless there. Note that on 64-bit Windows `System32` holds the 64-bit binaries and `SysWOW64` holds the 32-bit ones, despite what the names suggest.
+The other limit is bitness: the injector and the target must match. A 32-bit process maps `kernel32.dll` from `SysWOW64`, not `System32`, so an address resolved in a 64-bit injector is meaningless there. Note that on 64-bit Windows `System32` holds the 64-bit binaries and `SysWOW64` holds the 32-bit ones, despite what the names suggest.
 
 ## How it works
 1. `OpenProcess` - obtain a handle to the target process.
@@ -66,8 +66,8 @@ A non-NULL return from `CreateRemoteThread` only means that the thread was creat
 Because the thread starts at `LoadLibraryW`, its exit code is that function's return value: a module handle on success, or zero on failure. The value is truncated to 32 bits, so it can only be used as a success flag, not as a real handle.
 
 ## Demo
-![MessageBox displayed from notepad.exe](/assets/img/dll-injection/demo.PNG)
-_After running the injector, the message box appears inside notepad.exe._
+![MessageBox displayed from notepad.exe](/assets/img/dll-injection/demo.PNG){: .shadow}
+After running the injector, the message box appears inside notepad.exe.
 
 ## Detection
 ```powershell
