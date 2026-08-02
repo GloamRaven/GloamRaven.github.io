@@ -34,6 +34,7 @@ The other limit is bitness: the injector and the target must match. A 32-bit pro
 The target process loads the DLL through its own loader, so the payload runs under the target's identity.
 
 ## Implementation
+> The full source is in the [repository](https://github.com/GloamRaven/windows-process-injection/tree/main/01-dll-injection). Below I only annotate the parts that are not obvious from the API names.
 ```c
     hProc = OpenProcess(
     PROCESS_CREATE_THREAD |		// CreateRemoteThread
@@ -43,7 +44,7 @@ The target process loads the DLL through its own loader, so the payload runs und
 ```
 The injector does not request `PROCESS_ALL_ACCESS`. Every right is asked for because a specific API needs it, which follows the principle of least privilege. It also matters for detection: opening another process with full access is a well-known signal that EDR products watch for.
 
-MSDN states that `CreateRemoteThread` requires `PROCESS_CREATE_THREAD`, `PROCESS_QUERY_INFORMATION`, `PROCESS_VM_OPERATION`, `PROCESS_VM_WRITE` and `PROCESS_VM_READ`. The injector requests only three of them and the call still succeeds on Windows 10 x64, so the documented list appears to be wider than what the kernel actually enforces. Measuring the minimum set is the subject of a seperate post.
+MSDN states that `CreateRemoteThread` requires `PROCESS_CREATE_THREAD`, `PROCESS_QUERY_INFORMATION`, `PROCESS_VM_OPERATION`, `PROCESS_VM_WRITE` and `PROCESS_VM_READ`. The injector requests only three of them and the call still succeeds on Windows 10 x64, so the documented list appears to be wider than what the kernel actually enforces. Measuring the minimum set is the subject of a separate post.
 
 ```c
     SIZE_T pathSize = (wcslen(dllPath) + 1) * sizeof(WCHAR);
@@ -142,4 +143,4 @@ To run arbitrary code, the code itself has to be copied into the target rather t
 - [CreateRemoteThread](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createremotethread)
 
 ## GitHub
-[https://github.com/GloamRaven/windows-process-injection/tree/main/01-dll-injection](https://github.com/GloamRaven/windows-process-injection/tree/main/01-dll-injection)
+[GloamRaven/windows-process-injection/01-dll-injection](https://github.com/GloamRaven/windows-process-injection/tree/main/01-dll-injection)
