@@ -211,7 +211,9 @@ pre,
 
   .highlight .gi { color: var(--syn-add); background-color: transparent; }
   .highlight .gd { color: var(--syn-del); background-color: transparent; }
-  .highlight .err { color: var(--syn-bg); background-color: var(--syn-del); }
+  .highlight .err { color: var(--syn-del); background-color: transparent; }
+  .highlight .w,
+  .highlight .gh { background-color: transparent; }
 }
 
 /* ---------------- 사이드바 ↔ 본문 구분선 ---------------- */

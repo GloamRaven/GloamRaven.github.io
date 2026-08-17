@@ -60,6 +60,7 @@ Names are matched by hash rather than compared as strings. A hash is a single co
 	mov rbx, [rbx]							; kernel32.dll inloadordermodulelist
 	mov rbx, [rbx + 30h]					; kernel32.dll base adr
 ```
+{: file="sc.asm"}
 
 On x64 the TEB is always reachable through the GS segment, and the PEB pointer sits at GS:[0x60]. From there the chain to a module base is three dereferences: PEB->Ldr at +0x18, PEB_LDR_DATA->InLoadOrderModuleList at +0x10, then two Flink hops to reach the third entry in the list.
 
@@ -106,6 +107,7 @@ loop_ent:
 	mov rax, rdi
 	ret  
 ```
+{: file="sc.asm"}
 
 The export directory does not give you a name-to-address map. It gives you three parallel arrays, and only two of them are parallel to each other:
 
@@ -132,6 +134,7 @@ hash:
 	jnz hash
 	mov qword ptr [rbp + 10h], rdi	; Store the calculated hash in the scratch space
 ```
+{: file="sc.asm"}
 
 The resolver matches functions by hashing the export name instead of comparing strings. Two reasons: a hash constant is 4 bytes where "LoadLibraryA" is 13, and the shellcode carries no plaintext API names for a scanner to pattern-match on.
 
@@ -157,6 +160,7 @@ start:
 	sub rsp, 40h							; Shadow space shared by all subsequent calls
 	mov [rbp+8], rax						; Save the original RSP
 ```
+{: file="sc.asm"}
 
 This is where the shellcode failed first, and the failure is not obvious from the crash.
 
@@ -214,6 +218,7 @@ The prologue therefore does three things: pushes the callee-saved registers it i
 	lea r8, [rbp+32h]
 	call qword ptr[rbp+50h]	; call messageBoxA(0, 'Caw! Caw!', 'GloamRaven', 0)
 ```
+{: file="sc.asm"}
 
 Position independence rules out a .data section. Any string referenced by absolute address breaks the moment the bytes land at a different base in the target process, and the extractor copies out a flat blob with no relocations to fix up.
 
@@ -326,10 +331,12 @@ pass. I would not assume it raises the cost of a signature.
 pe-sieve flagged that region without being told where to look:
 
 ```json
-"module" : "1853a830000",
-"is_listed_module" : 0,
-"mapping_type" : "MEM_PRIVATE",
-"protection" : "20"
+{
+	"module" : "1853a830000",
+	"is_listed_module" : 0,
+	"mapping_type" : "MEM_PRIVATE",
+	"protection" : "20"
+}
 ```
 
 ![pe-sieve summary against a clean notepad.exe](/assets/img/shellcode-injection/PE-sieve-clean.PNG){: .shadow}
@@ -371,8 +378,10 @@ The thread scan caught the payload a second way, while the message box was waiti
 user input:
 
 ```json
-"indicators" : ["SUS_START", "SUS_CALLSTACK_SHC"],
-"susp_addr" : "1853a8301e9"
+{
+	"indicators" : ["SUS_START", "SUS_CALLSTACK_SHC"],
+	"susp_addr" : "1853a8301e9"
+}
 ```
 
 The call stack shows why. Every frame resolves to a module except one:
