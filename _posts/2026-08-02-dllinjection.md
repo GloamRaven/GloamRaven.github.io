@@ -69,7 +69,7 @@ Because the thread starts at `LoadLibraryW`, its exit code is that function's re
 
 ## Demo
 ![MessageBox displayed from notepad.exe](/assets/img/dll-injection/demo.PNG){: .shadow}
-After running the injector, the message box appears inside notepad.exe.
+_After running the injector, the message box appears inside notepad.exe._
 
 ## Detection
 ```powershell

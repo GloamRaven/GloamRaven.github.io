@@ -52,7 +52,7 @@ Names are matched by hash rather than compared as strings. A hash is a single co
 
 **Walking the PEB**
 
-```asm
+```nasm
 	mov rax, gs : [rax+60h]					; peb
 	mov rax, [rax + 18h]					; peb_ldr_data
 	mov rax, [rax + 10h]					; .exe inloadordermodulelist
@@ -69,7 +69,7 @@ One detail that makes InLoadOrderModuleList the convenient list to walk: InLoadO
 
 **Resolving exports through the ordinal table**
 
-```asm
+```nasm
 	mov edi, dword ptr [rbx + 3ch]			; pe header
 	add rdi, rbx
 	xor r8, r8
@@ -119,7 +119,7 @@ The tempting shortcut is to use i directly against AddressOfFunctions. It compil
 
 **Hashing API names**
 
-```asm
+```nasm
 	xor rdi, rdi
 	add di, 496h
 	call get_func_addr						; get loadlibrary address
@@ -144,7 +144,7 @@ This keeps the hash code small and avoids embedding plaintext strings in the she
 
 **Stack alignment and shadow space**
 
-```asm
+```nasm
 start:
 	push rbp
 	push rbx
@@ -166,7 +166,7 @@ The prologue therefore does three things: pushes the callee-saved registers it i
 
 **Building strings on the stack**
 
-```asm
+```nasm
 	xor rax, rax
 	mov qword ptr[rbp+20h], rax
 	mov qword ptr[rbp+28h], rax
@@ -264,7 +264,7 @@ The alternative most write-ups use is dumping the object with objdump and pastin
 
 ## Demo
 ![MessageBox displayed from notepad.exe](/assets/img/shellcode-injection/demo.PNG){: .shadow}
-After running the injector, the message box appears inside notepad.exe.
+_After running the injector, the message box appears inside notepad.exe._
 
 ## Detection
 None of the techniques in this shellcode are evasion. PEB walking and hash-based
@@ -333,6 +333,7 @@ pe-sieve flagged that region without being told where to look:
 ```
 
 ![pe-sieve summary against a clean notepad.exe](/assets/img/shellcode-injection/PE-sieve-clean.PNG){: .shadow}
+
 ![Injector output and pe-sieve summary against the injected process](/assets/img/shellcode-injection/PE-sieve.PNG){: .shadow}
 *The same command with the same flags, against a clean `notepad.exe` and against the
 injected one. The address the injector gets back from `VirtualAllocEx` is the name
